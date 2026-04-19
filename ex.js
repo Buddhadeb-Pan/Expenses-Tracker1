@@ -464,6 +464,22 @@ function renderExpenses(data = expenses) {
         document.getElementById('dateTo').addEventListener('change', applyFilters);
         document.getElementById('monthYear').addEventListener('change', applyFilters);
 
+        // Animate section reveals using IntersectionObserver
+        const animatedItems = document.querySelectorAll('.animate-item');
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            animatedItems.forEach(item => observer.observe(item));
+        } else {
+            animatedItems.forEach(item => item.classList.add('active'));
+        }
+
         // Modal functions
         function showLoginModal() {
             document.getElementById('loginModal').classList.add('show');
