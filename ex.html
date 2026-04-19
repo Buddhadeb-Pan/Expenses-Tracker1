@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Expenses Tracker</title>
+    <link rel="stylesheet" href="ex.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Expenses Tracker</h1>
+            <p>Manage your expenses efficiently</p>
+            <div class="auth-buttons">
+                <button class="btn-auth btn-login" onclick="showLoginModal()">Log In</button>
+                <button class="btn-auth btn-signup" onclick="showSignupModal()">Sign Up</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Add Expense Form -->
+            <div class="card">
+                <h2>Add New Expense</h2>
+                <div id="alert" class="alert" style="display: none;"></div>
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <div class="label-with-help">
+                            <label for="description">Description *</label>
+                            <button type="button" class="help-btn" data-help="description">?</button>
+                        </div>
+                        <input type="text" id="description" placeholder="e.g., Grocery Shopping" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-with-help">
+                            <label for="amount">Amount *</label>
+                            <button type="button" class="help-btn" data-help="amount">?</button>
+                        </div>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-with-help">
+                            <label for="category">Category *</label>
+                            <button type="button" class="help-btn" data-help="category">?</button>
+                        </div>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Food">🍔 Food</option>
+                            <option value="rent">� Rent</option>
+                            <option value="Transport">🚗 Transport</option>
+                            <option value="Entertainment">🎬 Entertainment</option>
+                            <option value="Utilities">💡 Utilities</option>
+                            <option value="Healthcare">🏥 Healthcare</option>
+                            <option value="Shopping">🛍️ Shopping</option>
+                            <option value="Education">📚 Education</option>
+                            <option value="Other">📌 Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-with-help">
+                            <label for="date">Date *</label>
+                            <button type="button" class="help-btn" data-help="date">?</button>
+                        </div>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-with-help">
+                            <label for="notes">Notes</label>
+                            <button type="button" class="help-btn" data-help="notes">?</button>
+                        </div>
+                        <textarea id="notes" placeholder="Add any additional notes..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-add">Add Expense</button>
+                        <button type="reset" class="btn-clear">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Statistics & Summary -->
+            <div class="card">
+                <div class="label-with-help">
+                    <h2>Summary</h2>
+                    <button type="button" class="help-btn" data-help="summary">?</button>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <h3>Total Expenses</h3>
+                        <div class="amount" id="totalAmount">$0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>This Month</h3>
+                        <div class="amount" id="monthAmount">$0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Average</h3>
+                        <div class="amount" id="averageAmount">$0.00</div>
+                    </div>
+                </div>
+
+                <div class="category-chart" id="categoryChart">
+                    <h3 style="margin-bottom: 15px; color: #667eea;">Expenses by Category</h3>
+                    <!-- Dynamic chart will be inserted here -->
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-item">
+                        <h3>Category Breakdown</h3>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    <div class="chart-item">
+                        <h3>Monthly Trends</h3>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+
+                <button class="btn-filter" onclick="downloadExpenses()">📥 Download Report</button>
+            </div>
+        </div>
+
+        <!-- Expenses List -->
+        <div class="card">
+            <div class="label-with-help">
+                <h2>Recent Expenses</h2>
+                <button type="button" class="help-btn" data-help="recent">?</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Search by description..." style="flex: 1.5;">
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Food">🍔 Food</option>
+                  <option value="rent">� Rent</option>
+                    <option value="Transport">🚗 Transport</option>
+                    <option value="Entertainment">🎬 Entertainment</option>
+                    <option value="Utilities">💡 Utilities</option>
+                    <option value="Healthcare">🏥 Healthcare</option>
+                    <option value="Shopping">🛍️ Shopping</option>
+                    <option value="Education">📚 Education</option>
+                    <option value="Other">📌 Other</option>
+                </select>
+            </div>
+
+            <!-- Date Filter Section -->
+            <div class="filters" style="margin-top: 15px;">
+                <div style="flex: 1; display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px;">📅 From Date</label>
+                        <input type="date" id="dateFrom" placeholder="From date">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px;">📅 To Date</label>
+                        <input type="date" id="dateTo" placeholder="To date">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px;">📆 By Month/Year</label>
+                        <input type="month" id="monthYear" placeholder="Month/Year">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group" style="margin-top: 15px; gap: 10px;">
+                <button class="btn-filter" onclick="applyFilters()">🔍 Filter</button>
+                <button class="btn-filter" style="background: #4ecdc4;" onclick="resetFilters()">↺ Reset Filters</button>
+                <button class="btn-filter" style="background: #ff6b6b;" onclick="clearAllExpenses()">🗑️ Clear All</button>
+            </div>
+
+            <div class="expenses-list scrollbar" id="expensesList">
+                <div class="empty-state">
+                    <p>No expenses yet. Add one to get started! 🚀</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-content" id="tooltipContent"></div>
+        <button class="tooltip-close" onclick="closeTooltip()">✕</button>
+    </div>
+
+    <!-- Auth Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Log In</h2>
+                <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-auth-submit">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn-auth-submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="ex.js"></script>
+
+
+</body>
+
+</html>
