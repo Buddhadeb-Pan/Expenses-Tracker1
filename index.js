@@ -538,3 +538,27 @@ function renderExpenses(data = expenses) {
                 }
             });
         });
+
+        // Welcome overlay behavior
+        const welcomeOverlay = document.getElementById('welcomeOverlay');
+        const enterAppBtn = document.getElementById('enterAppBtn');
+
+        function closeWelcomeOverlay() {
+            if (welcomeOverlay) {
+                welcomeOverlay.style.opacity = '0';
+                welcomeOverlay.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        if (enterAppBtn) {
+            enterAppBtn.addEventListener('click', closeWelcomeOverlay);
+        }
+
+        window.addEventListener('load', () => {
+            if (welcomeOverlay) {
+                welcomeOverlay.style.opacity = '1';
+            }
+        });

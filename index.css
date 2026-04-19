@@ -17,6 +17,81 @@ body {
     margin: 0 auto;
 }
 
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(102, 126, 234, 0.25), transparent 35%), linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(245, 247, 250, 0.95));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 30px;
+}
+
+.welcome-card {
+    width: min(520px, 100%);
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 28px;
+    box-shadow: 0 30px 80px rgba(53, 88, 159, 0.16);
+    padding: 40px 35px;
+    text-align: center;
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    animation: slideInUp 0.8s ease forwards;
+}
+
+.welcome-badge {
+    display: inline-flex;
+    background: rgba(102, 126, 234, 0.12);
+    color: #3d5afe;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    margin-bottom: 18px;
+}
+
+.welcome-card h1 {
+    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    margin-bottom: 18px;
+    color: #1f2a55;
+}
+
+.welcome-copy {
+    color: #52617a;
+    line-height: 1.75;
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+.btn-enter {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #4b74e5 0%, #7f75f9 100%);
+    cursor: pointer;
+    box-shadow: 0 16px 35px rgba(75, 116, 229, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-enter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 45px rgba(75, 116, 229, 0.3);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .header {
     text-align: center;
     color: #2c3e50;
