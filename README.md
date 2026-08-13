@@ -9,3 +9,12 @@ A web-based expense tracker designed to help users manage, categorize, and monit
 - Visualize expenses using pie and bar charts
 - Clean and responsive user interface
 - Easy expense monitoring
+
+## Technologies Used
+
+- HTML5
+- CSS
+- JavaScript
+
+## Live Demo
+[View Live Demo](https://buddhadeb-pan.github.io/Expenses-Tracker1/)
